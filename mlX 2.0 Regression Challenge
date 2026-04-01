@@ -1,0 +1,39 @@
+Project: MLX 2.0 Regression Challenge
+Phase: Initial Baseline Attempt (Version 1)
+
+1. Exploratory Data Analysis (EDA)
+The initial step involved loading the training dataset (61,609 records) and conducting exploratory data analysis to understand the underlying distributions and data quality.
+
+Target Distribution: A count plot of the target variable revealed a continuous distribution with a noticeable skew, indicating a wide spread of target values with a concentration in the middle-to-higher ranges.
+
+Missing Data: A visual mapping using a seaborn heatmap highlighted that missing values were scattered extensively across multiple numerical and categorical columns, necessitating a robust imputation strategy before model training.
+
+2. Feature Selection Strategy
+To prevent the model from capturing noise, reduce dimensionality, and optimize training efficiency, a strict feature selection process was employed.
+
+Numerical Features: Mutual Information (MI) classification was used to quantify the dependency between the independent variables and the target. The dataset was reduced to the top 10 most informative numerical features (e.g., organic_immersion_1, groove_efficiency_1, duration_ms_2).
+
+Categorical Features: Based on count plot visualizations comparing categorical features against the target distribution, three variables were selected for inclusion: weekday_of_release, season_of_release, and lunar_phase.
+
+3. Data Preprocessing Pipeline
+A scikit-learn ColumnTransformer and Pipeline were constructed to handle preprocessing seamlessly and prevent data leakage between the training and validation sets.
+
+Numerical Data: Missing values were handled using a SimpleImputer with a median strategy, which is generally more robust against outliers than a mean imputation. The data was then normalized using a StandardScaler.
+
+Categorical Data: Missing categories were filled with a constant "Missing" label. The data was then transformed using OneHotEncoder, dropping the first column to prevent multicollinearity (the dummy variable trap).
+
+4. Modeling Approach: Random Forest Regressor
+For the baseline model, a Random Forest Regressor was selected. This ensemble method uses bagging (Bootstrap Aggregating) to train multiple decision trees on random subsets of the data and averages their predictions. It was chosen for the first attempt because it naturally handles non-linear relationships and interactions between features without requiring complex data transformations.
+
+Hyperparameters: The model was instantiated with n_estimators=300 to ensure a stable ensemble, min_samples_split=10 to prevent individual trees from over-fitting to noise at the leaf nodes, and max_features=1.0.
+
+5. Evaluation Metrics & Discussion
+A standard 80/20 train-test split was used for validation. The model was evaluated using several metrics to provide a comprehensive view of its performance:
+
+Mean Squared Error (MSE): 143.1882. This metric averages the squared differences between predicted and actual values. Because errors are squared, it heavily penalizes large prediction errors.
+
+Root Mean Squared Error (RMSE): 11.9661. By taking the square root of the MSE, this metric returns the error to the original units of the target variable. It indicates that, on average, the model's predictions are off by roughly 12 units.
+
+Mean Absolute Error (MAE): 7.0802. MAE represents the average absolute difference between predictions and actuals. Noticeably, the RMSE (11.96) is significantly higher than the MAE (7.08). This variance indicates that while the model's typical median error is relatively low (~7 units), it occasionally makes very large prediction errors (outliers) that drive up the RMSE.
+
+R-squared (R2): 0.6926. The coefficient of determination shows that this baseline model explains approximately 69.26% of the variance in the target variable. While this is a solid starting point, leaving over 30% of the variance unexplained highlights a clear opportunity for improvement through advanced feature engineering and more sophisticated algorithms like gradient boosting.
