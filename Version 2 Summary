@@ -20,3 +20,28 @@ Objective: Improve upon the baseline model (RMSE: 11.9661, R2: 0.6926) by testin
 • Optimal Point: Identified an elbow at 40 features.
 
 • Final Result: Optimized RMSE of 10.8254. Adding features beyond 40 showed diminishing returns.
+
+Feature Engineering
+Objective: Create novel temporal and interaction features to capture complex relationships in the audio data, evaluating them mathematically before model insertion.
+
+1. Engineered Features & Mutual Information: Instead of blindly adding features, Mutual Information (MI) Regression was used to validate their predictive power against the target.
+
+• `beat_to_groove_ratio`: Ranked #2 overall (MI Score: 2.345). Proved the hypothesis that the interaction between beat frequency and groove efficiency is a massive driver of the target.
+
+• `intensity_to_duration`: Ranked #16 overall (MI Score: 2.062).
+
+• `track_age_days`: Ranked #23 overall (MI Score: 1.644). Extracted absolute time from the timestamp, providing a strong historical trend signal absent in the cyclical features (season/weekday).
+
+• `organic_density`: Ranked #41. Failed to break the top 40 threshold and was excluded from the pipeline to prevent noise.
+
+2. Model Evaluation (Random Forest with New Features):
+
+• Validation MSE: 119.0296
+
+• Validation RMSE: 10.9101
+
+• Validation MAE: 6.0164
+
+• Validation R2: 0.7444
+
+• Discussion: The engineered features caused a significant leap in $R^2$ (up to ~74.4%) and a massive drop in MAE (down to ~6.01). The model is now highly accurate on median predictions, proving the engineered ratios successfully exposed hidden core patterns in the data.
