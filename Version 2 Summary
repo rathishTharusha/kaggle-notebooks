@@ -1,0 +1,22 @@
+Advanced Missing Value Strategy & Feature Optimization
+Objective: Improve upon the baseline model (RMSE: 11.9661, R2: 0.6926) by testing more sophisticated imputation methods and optimizing the feature set.
+
+1. IterativeImputer
+
+• Results: MSE: 145.0197, RMSE: 12.0424, MAE: 7.1521, R2: 0.6886.
+
+• Observation: Performance slightly decreased compared to the baseline. This suggests that the linear modeling used by IterativeImputer may have introduced noise or failed to capture non-linear relationships in the missing data.
+
+2. KNNImputer (k=5)
+
+• Results: MSE: 132.6779, RMSE: 11.5186, MAE: 6.5077, R2: 0.7151.
+
+• Observation: Significant improvement across all metrics. KNN was better suited for this dataset, effectively capturing local similarities between records to fill missing values.
+
+3. Feature Count Optimization
+
+• Method: Evaluated performance using the top 10, 20, 30, 40, and 51 numerical features based on Mutual Information scores.
+
+• Optimal Point: Identified an elbow at 40 features.
+
+• Final Result: Optimized RMSE of 10.8254. Adding features beyond 40 showed diminishing returns.
