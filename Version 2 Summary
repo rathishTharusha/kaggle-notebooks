@@ -66,3 +66,26 @@ Objective: Fulfill the requirement to test and compare at least two different ML
 • Discussion & Comparison: The tuned XGBoost significantly improved upon the untuned version but ultimately failed to beat the Random Forest (RMSE: 10.91).
 
 • Conclusion: The Random Forest's Bagging approach proved more robust for capturing the deep, non-linear relationships in the engineered features without requiring exhaustive hyperparameter tuning. The major drawback of XGBoost is its extreme sensitivity to hyperparameter configuration; a 20-iteration random search was insufficient to find a configuration that out-performed the deeply grown trees of the Random Forest.
+
+Advanced Ensembling (Stacking Regressor)
+Objective: Combine the strengths of Bagging (Random Forest) and Boosting (XGBoost) to achieve the highest possible predictive accuracy.
+
+1. Methodology:
+
+• Implemented a `StackingRegressor` using a 3-fold cross-validation scheme.
+
+• Base Learners: The highly successful Random Forest (from Phase 2) and a regularized XGBoost model.
+
+• Meta-Learner: A Ridge Regression model was selected to blend the base predictions. Ridge was chosen to prevent the meta-learner from overfitting or over-relying on a single base model.
+
+2. Model Evaluation:
+
+• Validation MSE: 115.8201
+
+• Validation RMSE: 10.7620
+
+• Validation MAE: 6.6577
+
+• Validation R2: 0.7513
+
+3. Discussion & Conclusion: The Stacking Ensemble successfully achieved the lowest RMSE (10.76) and highest R-squared (~75.1%) of the entire project, proving the efficacy of combining different algorithmic approaches. Interestingly, while the RMSE improved, the MAE increased slightly compared to the standalone Random Forest (6.01 to 6.65). This demonstrates the Ridge meta-learner's mathematical optimization: it traded a slight decrease in median accuracy to aggressively correct large outlier errors, ultimately producing a more robust and heavily penalized model.
