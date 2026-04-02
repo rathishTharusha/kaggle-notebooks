@@ -45,3 +45,24 @@ Objective: Create novel temporal and interaction features to capture complex rel
 • Validation R2: 0.7444
 
 • Discussion: The engineered features caused a significant leap in $R^2$ (up to ~74.4%) and a massive drop in MAE (down to ~6.01). The model is now highly accurate on median predictions, proving the engineered ratios successfully exposed hidden core patterns in the data.
+
+Upgrading the Modeling Strategy (XGBoost)
+Objective: Fulfill the requirement to test and compare at least two different ML approaches by implementing Extreme Gradient Boosting (XGBoost) and comparing it against the Random Forest baseline.
+
+1. Untuned XGBoost (Version 5.0):
+
+• Method: Implemented an out-of-the-box XGBoost Regressor (500 trees, depth 6).
+
+• Result: Severe overfitting. The validation RMSE spiked to 12.38 (worse than the initial baseline).
+
+• Drawback Identified: Unlike Random Forest, Boosting algorithms aggressively target residuals and will quickly memorize training noise if not regularized.
+
+2. Tuned XGBoost via RandomizedSearchCV (Version 5.2):
+
+• Method: Implemented Early Stopping and a `RandomizedSearchCV` over a 3-fold cross-validation to find optimal hyperparameters (learning rate, max depth, subsample rates) across 20 iterations.
+
+• Results: Validation MSE: 134.39, RMSE: 11.59, MAE: 7.34, R2: 0.71.
+
+• Discussion & Comparison: The tuned XGBoost significantly improved upon the untuned version but ultimately failed to beat the Random Forest (RMSE: 10.91).
+
+• Conclusion: The Random Forest's Bagging approach proved more robust for capturing the deep, non-linear relationships in the engineered features without requiring exhaustive hyperparameter tuning. The major drawback of XGBoost is its extreme sensitivity to hyperparameter configuration; a 20-iteration random search was insufficient to find a configuration that out-performed the deeply grown trees of the Random Forest.
